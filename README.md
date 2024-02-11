@@ -15,20 +15,20 @@
 - В консоле появится ссылка на локальный сервер
 
 ВСЕ ИСПОЛЬЗУЕМЫЕ ПЛАГИНЫ И СРЕДЫ РАЗРАБОТКИ: Node js, 
-    bcrypt: ^5.0.0,
-    connect-ensure-login: ^0.1.1,
-    connect-flash: ^0.1.1,
-    connect-mongo: ^3.2.0,
-    dotenv: ^8.2.0,
-    ejs: ^3.1.5,
-    express: ^4.17.1,
-    express-session: ^1.17.1,
-    express-validator: ^6.8.0,
-    http-errors:  ^1.8.0,
-    mongoose: ^5.11.7,
-    morgan: ^1.10.0,
-    passport: ^0.4.1,
-    passport-local: ^1.0.0
+bcrypt: ^5.0.0,
+connect-ensure-login: ^0.1.1,
+connect-flash: ^0.1.1,
+connect-mongo: ^3.2.0,
+dotenv: ^8.2.0,
+ejs: ^3.1.5,
+express: ^4.17.1,
+express-session: ^1.17.1,
+express-validator: ^6.8.0,
+http-errors:  ^1.8.0,
+mongoose: ^5.11.7,
+morgan: ^1.10.0,
+passport: ^0.4.1,
+passport-local: ^1.0.0
 
 РАЗРАБОТЧИКИ:
 
