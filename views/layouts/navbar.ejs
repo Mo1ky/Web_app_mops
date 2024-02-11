@@ -1,0 +1,184 @@
+    <!-- Боковое меню -->
+    <nav class="sidebar close">
+        <header>
+            <div class="image-text">
+                <span class="image">
+                    <img src="/img/icon_mops.png" alt="">
+                </span>
+
+                <div class="text logo-text">
+                    <span class="name">ИС "М.О.П.С."</span>
+                    <span class="profession">
+                        <%= user.username %>
+                    </span>
+                    <div class="close_mobile">
+                        <i class="fa-solid fa-x"></i>
+                    </div>
+                </div>
+
+            </div>
+            <i class="fa-solid fa-angle-left toggle"></i>
+        </header>
+        <div class="menu-bar">
+            <div class="menu">
+                <ul>
+                    <li class="search-box">
+                        
+                        <i class="icon fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search" placeholder="В разработке...">
+                    </li>
+                </ul>
+                <ul class="menu-links">
+                    <li class="nav-link">
+                        <a href="/">
+                            <i class="fa-regular fa-building icon"></i>
+                            <span class="text nav-text">Объекты</span>
+                        </a>
+                    </li>
+
+                    <li class="nav-link">
+                        <a href="/orders/list">
+                            <i class="fa-regular fa-comment icon"></i>
+                            <span class="text nav-text">Заявки</span>
+                        </a>
+                    </li>
+                    <% if (user.role === 'ADMIN') { %>
+                    <li class="nav-link">
+                        <a href="/admin/users">
+                            <i class="fa-regular fa-user icon"></i>
+                            <span class="text nav-text">Пользователи</span>
+                        </a>
+                    </li>
+                    <% } %>
+                </ul>
+            </div>
+
+            <div class="bottom-content">
+                <% if (user.role === 'ADMIN') { %>
+                    <!-- Пункт меню добавление нового объекта -->
+                    <li>
+                        <a href="#popup-new-object" class="popup-link">
+                            <i class="fa-solid fa-object-ungroup icon"></i>
+                            <span class="text nav-text">Новый объект</span>
+                        </a>
+                    </li>
+                    <!-- Модальное окно с добавлением нового объекта -->
+                    <div id="popup-new-object" class="popup">
+                        <div class="popup__body">
+                            <div class="popup__content">
+                                <div class="popup__header">
+                                    <h1 class="popup__title">Новый объект</h1>
+                                    <a href="#" class="popup__close close-popup">
+                                        <i class="fa fa-solid fa-xmark" alt="Закрыть модальное окно"></i>
+                                    </a>
+                                </div>
+                                
+                                <div class="popup__info">
+                                    <!-- Форма нового объекта -->
+                                    <form action="/admin/newObject" method="post">
+                                        <div class="form-group">
+                                            <input class="form-control item" type="text" name="object_name" minlength="4" placeholder="Название объекта" id="object_name" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control item" type="text" name="adress" minlength="4" placeholder="Адрес объекта" id="adress" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control item" type="text" name="inn" minlength="6" id="inn" placeholder="ИНН объекта" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control item" type="text" name="client_login" maxlength="20" minlength="4" id="client_login" placeholder="Логин заказчика" required>
+                                        </div>
+                                        <div class="popup__header">
+                                            <h1 class="title_form" >Контактное лицо:</h1>
+                                        </div>
+                                        
+                                        <div class="form-group">
+                                            <ul>
+                                                
+                                                <li>
+                                                    <input class="form-control item" type="text" name="fio_object_contact" minlength="3" id="fio_object_contact" placeholder="ФИО заказчика" required>
+                                                </li>
+                                                <li><input class="form-control item" type="text" name="job_object_contact" minlength="6" id="job_object_contact" placeholder="Должность заказчика" required></li>
+                                                <li><input class="form-control item" type="number" name="phone_object_contact" id="phone_object" name="phone_object_contact" pattern="\+7\s?[\(]{0,1}9[0-9]{2}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}" placeholder="+7 (900) 111-10-10" required /></li>
+                                            </ul>
+                                        </div>
+                                        <div class="popup__footer popup__info">
+                                            <button class="btn " type="submit" >Создать</button>
+                                            <!-- <i class="fa-solid fa-spinner fa-spin"></i> -->
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- Пункт меню добавление нового пользователя -->
+                    <li>
+                        <a href="#popup-new-user" class="popup-link">
+                            <i class="fa-solid fa-plus icon"></i>
+                            <span class="text nav-text">Добавить<br>пользователя</span>
+                        </a>
+                    </li>
+                    <!-- Модальное окно с формой для добавления нового пользователя -->
+                    <div id="popup-new-user" class="popup">
+                        <div class="popup__body">
+                            <div class="popup__content">
+                                <div class="popup__header">
+                                    <h1 class="popup__title">Новый<br>пользователь</h1>
+                                    <a href="#" class="popup__close close-popup">
+                                        <i class="fa fa-solid fa-xmark" alt="Закрыть модальное окно"></i>
+                                    </a>
+                                </div>
+                                
+                                <div class="popup__info">
+                                    <form action="/auth/register" method="post">
+                                        <div class="form-group">
+                                            <input class="form-control item" type="text" name="username" maxlength="20" minlength="4" pattern="^[a-zA-Z0-9_.-]*$" placeholder="Логин" id="username" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control item" type="password" name="password" minlength="6" id="password" placeholder="Пароль" required>
+                                        </div>
+                                        <div class="form-group">
+                                            <input class="form-control item" type="number" name="phonenum" id="phonenum" name="phonenum" pattern="\+7\s?[\(]{0,1}9[0-9]{2}[\)]{0,1}\s?\d{3}[-]{0,1}\d{2}[-]{0,1}\d{2}" placeholder="+7 (900) 111-10-10" required />
+                                        </div>
+                                        <div class="form-group">
+                                            <ul>
+                                                <li><input type="radio" id="client" name="role" value="client"><label for="client">
+                                                    <span>Заказчик</span></label></li>
+                                                <li><input type="radio" id="admin" name="role" required value="admin"><label for="admin">
+                                                    <span>Администратор</span></label></li>
+                                                <li><input type="radio" id="master" name="role" value="master"><label for="master">
+                                                    <span>Мастер</span></label></li>
+                                            </ul>
+                                        </div>
+                                        <div class="popup__footer popup__info">
+                                            <button class="btn " type="submit" >Создать</button>
+                                            <!-- <i class="fa-solid fa-spinner fa-spin"></i> -->
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                <% } %>
+                <!-- Выход из профиля -->
+                <li>
+                    <a href="/auth/logout">
+                        <i class="fa-solid fa-right-from-bracket icon"></i>
+                        <span class="text nav-text">Выйти из профиля</span>
+                    </a>
+                </li>
+                
+
+                <li class="mode">
+                    <div class="sun-moon">
+                        <i class="fa-regular fa-moon icon moon"></i>
+                        <i class="fa-regular fa-sun icon sun"></i>
+                    </div>
+                    <span class="mode-text text">Тёмная тема</span>
+                    <div class="toggle-switch">
+                        <span class="switch"></span>
+                    </div>
+                </li>
+            </div>
+        </div>
+    </nav>

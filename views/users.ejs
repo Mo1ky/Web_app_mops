@@ -1,0 +1,104 @@
+<%- include('./layouts/header') %>
+<body class>
+    <%- include('./layouts/navbar') %>
+
+    <section class="home">
+        <main class="content wrapper">
+            <a id="button"><i class="fa-solid fa-chevron-up icon"></i></a>
+            <div id="mobile_header">
+                <div class="menu-box">
+                    <i class="fa-solid fa-bars mobile-toggle"></i>
+                </div>
+                <div class="mobile-title">
+                    ИС "М.О.П.С."
+                </div>
+
+            </div>
+            <div class="general">
+                    <div class="title">
+                        Список пользователей
+                    </div>
+                    <div class="users">
+                        <div class="users__body">
+
+                            <% users.forEach(user => { %>
+                                <div class="users__item">
+                                    <div class="users__avatar">
+                                        <span><%= user.username[0] %></span>
+                                    </div>
+                                    <div class="users__information">
+                                        <div>
+                                            <div class="users__login"><%= user.username %></div>
+
+                                        <% if (user.role === 'ADMIN') { %>
+                                        <div class="users__roles">
+                                            Администратор
+                                        </div>
+                                        <% } %>
+
+                                        <% if (user.role === 'MASTER') { %>
+                                        <div class="users__roles">
+                                            Мастер
+                                        </div>
+                                        <% } %>
+
+                                        <% if (user.role === 'CLIENT') { %>
+                                        <div class="users__roles">
+                                            Заказчик
+                                        </div>
+                                        <% } %>
+                                    </div>
+                                    <!-- Номер телефона пользователя -->
+                                    <div class="users__number">
+                                        <%= user.phonenum %>
+                                    </div>
+                                    </div>
+                                    
+                                </div>
+                            <% }) %>
+
+                                <!-- <div class="users__item">
+                                    <div class="users__avatar">
+                                        <p>
+                                            <span></span>
+                                        </p>
+                                    </div>
+                                    <div class="users__information">
+                                        <div class="users__login">SF234dFsa!</div>
+                                        <div class="users__roles">
+                                            Заказчик
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="users__item">
+                                    <div class="users__avatar">
+                                        <p>
+                                            <span></span>
+                                        </p>
+                                    </div>
+                                    <div class="users__information">
+                                        <div class="users__login">SDDdssDS332!</div>
+                                        <div class="users__roles">
+                                            Мастер
+                                        </div>
+                                    </div>
+                                </div> -->
+                            </div>
+                        </div>
+                    </div>
+                
+        </main>
+    </section>
+
+</body>
+
+<script src="/js/jquery-3.7.1.min.js"></script>
+<script src="/js/script.js"></script>
+<script src="/js/mixitup.min.js"></script>
+<script src="/js/accordion.js"></script>
+<script src="/js/card.js"></script>
+<script>      
+    var mixer = mixitup(".types__row");
+</script>
+
+</html>

@@ -1,0 +1,71 @@
+<%- include('./layouts/header') %>
+<body class>
+    <%- include('./layouts/navbar') %>
+    <section class="home">
+        <main class="content wrapper">
+            <!-- Кнопка для чтобы вернуться наверх страницы -->
+            <a id="button">
+                <i class="fa-solid fa-chevron-up icon"></i>
+            </a>
+            <!-- Мобильный хедер -->
+            <div id="mobile_header">
+                <div class="menu-box">
+                    <i class="fa-solid fa-bars mobile-toggle"></i>
+                </div>
+                <div class="mobile-title">
+                    ИС "М.О.П.С."
+                </div>
+            </div>
+            <!-- див с ошибкой -->
+            <div class="block__info">
+                <%- include('./layouts/flash-message') %>
+            </div>
+            <div class="general">
+                <div class="title">
+                    Заявки
+                </div>
+                <div class="orders">
+                    <div class="orders__body">
+
+                        <% orders.forEach(order => { %>
+                        <div class="orders__item">
+                            <div class="order__information">
+                                <div class="orders__object">
+                                    <%= order.order_object_name %>
+                                </div>
+                                <div class="orders__object">
+                                    <%= order.order_status %>
+                                </div>
+                                <div class="orders__button">
+                                    <button class="btn" type="submit">Подтвердить</button>
+                                    <button  class="btn" type="submit">Отклонить</button>
+                                    <button  class="btn" type="submit">Отменить</button>
+                                </div>
+                            </div>
+                            
+                            <!-- <div class="form-group">
+                                <div class="info">
+                                    
+                                </div>
+                                <div class="orders__button">
+                                    <button class="btn" type="submit">Подтвердить</button>
+                                </div>
+                                
+                            </div> -->
+                            <div class="form-group">
+                                <input class="form-control item" type="text" name="order_master_login" maxlength="15" minlength="4" pattern="^[a-zA-Z0-9_.-]*$" placeholder="Логин мастера" id="order_master_login" required>
+                            </div>
+                        </div>
+                        <% }) %>
+
+                        
+                    </div>
+                </div>
+            </div>
+        </main>
+    </section>
+<script src="/js/script.js"></script>
+<script src="/js/accordion.js"></script>
+<script src="/js/card.js"></script>
+
+<%- include ('layouts/footer') %>
