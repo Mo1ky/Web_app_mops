@@ -1,0 +1,162 @@
+<%- include('./layouts/header') %>
+<body class>
+    <%- include('./layouts/navbar') %>
+    <section class="home">
+        <main class="content wrapper">
+            <!-- Кнопка для чтобы вернуться наверх страницы -->
+            <a id="button">
+                <i class="fa-solid fa-chevron-up icon"></i>
+            </a>
+            <!-- Мобильный хедер -->
+            <div id="mobile_header">
+                <div class="menu-box">
+                    <i class="fa-solid fa-bars mobile-toggle"></i>
+                </div>
+                <div class="mobile-title">
+                    ИС "М.О.П.С."
+                </div>
+            </div>
+            <!-- див с ошибкой -->
+            <div class="block__info">
+                <%- include('./layouts/flash-message') %>
+            </div>
+            <div class="general">
+                <div class="title">
+                    Заявки
+                </div>
+                <div class="orders">
+                    <div class="orders__body">
+                        <div class="types__filters">
+                            <h2 class="filters__title">Статусы:</h2>
+                            <button type="button" class="types__button mixitup-control-active" data-filter="all">Все виды</button>
+                            <button type="button" class="types__button" data-filter=".new_order">Новая заявка</button>
+                            <button type="button" class="types__button" data-filter=".progress">Выполняется</button>
+                            <button type="button" class="types__button" data-filter=".cancel">Отменена</button>
+                            <button type="button" class="types__button" data-filter=".ready_close">Готова к закрытию</button>
+                            <button type="button" class="types__button" data-filter=".revision">Отправлена на доработку</button>
+                            <button type="button" class="types__button" data-filter=".completed">Выполнена</button>
+                        </div>
+                    <% if (!(orders.length === 0)) { %>
+                        <% orders.reverse().forEach(order => { %>
+                        <div class="orders__item mix <%= order.order_status %>">
+                            <div class="orders__header">
+                                <%= order.order_object_name %>
+                                <div class="orders__data">
+                                    Статус: <span class="orders-status"><%= order.order_status %></span>
+                                </div>
+                            </div>
+                            <div class="orders__item-body">
+                            <div class="orders__item-body-content">
+                                <div class="orders__title">Информация о заявке:</div>
+                                <div class="orders__information">
+                                    <div class="orders__data">
+                                        Вид работы: 
+                                        <span>
+                                            <% if (order.work_type === "service"){%>
+                                            Обслуживание
+                                            <% } %>
+                                            <% if (order.work_type === "montage"){%>
+                                            Монтаж
+                                            <% } %>
+                                            <% if (order.work_type === "repair"){%>
+                                            Ремонт
+                                            <% } %>
+                                        </span>
+                                    </div>
+                                    <div class="orders__data">
+                                        Вид оборудования: 
+                                        <span>
+                                            <% if (order.equipment_type === "video_control"){%>
+                                            Видеонаблюдение
+                                            <% } %>
+                                            <% if (order.equipment_type === "fire_control"){%>
+                                            Пожарная сигнализация
+                                            <%}%> 
+                                        </span>
+                                    </div>
+                                </div>
+                                <% if (order.client_comment){%>
+                                    <div class="orders__title">Комментарий заказчика:</div>
+                                    <p class="orders__data">
+                                        <%= order.client_comment %>
+                                    </p>
+                                <%}%>
+                                <% if (user.role === 'ADMIN'){ %>
+                                    <div class="orders__title">Логин исполнителя:</div>
+                                        <div class="orders__perform">
+                                            <% if (!(order.order_status === 'Новая заявка')) {%>
+                                                <%=order.order_master_login%>
+                                            <%}%>
+                                        </div>
+                                        <% if (order.order_status === 'Новая заявка' || order.order_status === 'Отклонена мастером'){%>
+                                            <form action="/orders/approve" method="post">
+                                                <div class="form-group">
+                                                    <input class="form-control item orders-input" type="hidden" name="id" id="id" value="<%= order.id %>" required>
+                                                    <input class="form-control item orders-input" type="text" name="order_master_login" maxlength="15" minlength="4" pattern="^[a-zA-Z0-9_.-]*$" placeholder="Логин мастера" id="order_master_login" required>
+                                                </div>
+                                                <div class="orders__button">
+                                                    <button class="btn" type="submit">Подтвердить заявку</button>
+                                                </div>
+                                            </form>
+                                        <%}%>
+                                <%}%>
+                                
+                                <% if (!(order.order_status === 'Отменена' || order.order_status === 'Выполнена') && (user.role === 'MASTER')) { %>
+                                    <form action="/orders/done" method="post">
+                                        <div class="orders__button">
+                                            <input class="form-control item orders-input" type="hidden" name="id" id="id" value="<%= order.id %>" required>
+                                            <input class="form-control item orders-input" type="hidden" name="order_master_login" id="order_master_login" value="<%= order.order_master_login %>" required>
+                                            <button  class="btn" type="submit">Подтвердить выполнение</button>
+                                        </div>
+                                    </form>
+                                    <form action="/orders/reject" method="post">
+                                        <div class="orders__button">
+                                            <input class="form-control item orders-input" type="hidden" name="id" id="id" value="<%= order.id %>" required>
+                                            <button  class="btn" type="submit">Отклонить</button>
+                                        </div>
+                                    </form>
+                                <%}%>
+                                <% if ((order.order_status === 'Готова к закрытию') && (user.role === 'ADMIN')){ %>
+                                    <form action="/orders/confirm" method="post">
+                                        <div class="orders__button">
+                                            <input class="form-control item orders-input" type="hidden" name="id" id="id" value="<%= order.id %>" required>
+                                            <button  class="btn" type="submit">Подтвердить</button>
+                                        </div>
+                                    </form>
+                                    <form action="/orders/rework" method="post">
+                                        <div class="orders__button">
+                                            <input class="form-control item orders-input" type="hidden" name="id" id="id" value="<%= order.id %>" required>
+                                            <button  class="btn" type="submit">Отправить на доработку</button>
+                                        </div>
+                                    </form>
+                                <%}%>
+                                <% if (!(order.order_status === 'Отменена' || order.order_status === 'Выполнена') && !(user.role === 'MASTER')){ %>
+                                    <form action="/orders/decline" method="post">
+                                        <div class="orders__button">
+                                            <input class="form-control item orders-input" type="hidden" name="id" id="id" value="<%= order.id %>" required>
+                                            <input class="form-control item orders-input" type="hidden" name="order_client_login" id="order_client_login" value="<%= order.order_client_login %>" required>
+                                            <button  class="btn" type="submit">Отменить</button>
+                                        </div>
+                                    </form>
+                                <%}%>
+                                
+                            </div>
+                            </div>
+                        </div>
+                        <% }) %> 
+                    <% } %> 
+                    <% if (orders.length === 0) {%> 
+                        <div class="block__info empty-title">
+                            Заявок пока что нет
+                        </div>
+                    <% } %>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </section>
+<script src="/js/script.js"></script>
+<script src="/js/card.js"></script>
+<script>      
+    var mixer = mixitup(".orders__body");
+</script>
